@@ -58,7 +58,7 @@ workflows:
   version: 2
   build-deploy:
     jobs:
-      - build-job
+      - build
       - deploy-job:
           requires:
             - build-job # Only deploy once the build job has completed
