@@ -28,7 +28,8 @@ jobs:
       - run: sudo apt install nginx
       - run: sudo mkdir -p /var/www/default/html
       - run: sudo touch /var/www/default/html/index.html
-      - run: echo -e "<button onclick="myFunction\(\)">Click me</button>\n\n<p id="demo"></p>\n\n<script>\nfunction myFunction\(\) {\n document.getElementById\("demo"\).innerHTML = "Hello World";\n}\n</script>\n\n</body>\n</html>" >> /var/www/default/html/index.html
+      - run: sudo echo -e "<button onclick="myFunction\(\)">Click me</button>\n\n<p id="demo"></p>\n\n<script>\nfunction myFunction\(\) {\n document.getElementById\("demo"\).innerHTML = "Hello World";\n}\n</script>\n\n</body>\n</html>" >> /var/www/default/html/index.html
+      - run: sudo cat /var/www/default/html/index.html
       - run: sudo chown -R $USER:$USER /var/www/default/html
       - run: sudo chmod -R 755 /var/www/default/html
       - run: sudo systemctl restart nginx
