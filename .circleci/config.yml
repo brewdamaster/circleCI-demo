@@ -22,3 +22,4 @@ jobs:
           gcloud --quiet config set compute/zone $GOOGLE_COMPUTE_ZONE
           docker tag brewdamaster/circleci-demo:button-demo gcr.io/circleci-demo-297514/button-demo
           docker push gcr.io/circleci-demo-297514/button-demo
+          gcloud run deploy button-demo --image=gcr.io/circleci-demo-297514/button-demo --allow-unauthenticated --port=80 --platform=managed --region=us-central1
