@@ -35,22 +35,26 @@ jobs:
       - run: sudo cat /var/www/default/html/index.html
       - run: sudo /etc/init.d/nginx start
 
-  deploy:
-    docker:
-      - image: circleci/php:7.1-node-browsers
-        auth:
-          username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
-    working_directory: /tmp/my-project
+  build-and-push:
+    executor: gcp-gcr/default
     steps:
-      #- run:
-          #name: Deploy Master to GKE
-          #command: |
-          # Push Docker image to registry, update K8s deployment to use new image - `gcloud` command handles authentication and push all at once
-          #sudo /opt/google-cloud-sdk/bin/gcloud docker push us.gcr.io/${PROJECT_NAME}/hello
-          # The new image is now available in GCR for the GCP infrastructure to access, next, change permissions:
-          #sudo chown -R ubuntu:ubuntu /home/ubuntu/.kube
-          # Use `kubectl` to find the line that specifies the image to use for our container, replace with image tag of the new image.
-          # The K8s deployment intelligently upgrades the cluster by shutting down old containers and starting up-to-date ones.
-          #kubectl patch deployment docker-hello-google -p '{"spec":{"template":{"spec":{"containers":[{"name":"docker-hello-google","image":"us.gcr.io/circle-ctl-test/hello:'"$CIRCLE_SHA1"'"}]}}}}'
-          
+      - checkout
+      - gcp-gcr/gcr-auth
+      - gcp-gcr/build-image:
+          image: orb-test
+          no_output_timeout: 20m
+          registry-url: eu.gcr.io
+      - gcp-gcr/push-image:
+          digest-path: /tmp/digest.txt
+          image: orb-test
+          registry-url: eu.gcr.io
+      - run:
+          command: |
+            echo "Digest is: $(</tmp/digest.txt)"
+orbs:
+  gcp-gcr: circleci/gcp-gcr@x.y.z
+version: 2.1
+workflows:
+  commit:
+    jobs:
+      - build-and-push
