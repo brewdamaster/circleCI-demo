@@ -21,10 +21,11 @@ jobs:
     steps:
       - checkout
 
+      - working_directory: button-app
+
       - run: sudo apt update # PHP CircleCI 2.0 Configuration File# PHP CircleCI 2.0 Configuration File sudo apt install zlib1g-dev libsqlite3-dev
       #- run: sudo docker-php-ext-install zip
       - run: sudo apt install nginx
-      - run: sudo ufw allow 'Nginx HTTP'
       - run: sudo mkdir -p /var/www/default
       - run: sudo chown -R $USER:$USER /var/www/default/html
       - run: sudo chmod -R 755 /var/www/default/html
