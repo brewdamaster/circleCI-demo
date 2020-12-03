@@ -35,6 +35,7 @@ jobs:
       - run: sudo cat /var/www/default/html/index.html
       - run: sudo /etc/init.d/nginx start
 
+jobs:
   build-and-push:
     executor: gcp-gcr/default
     steps:
