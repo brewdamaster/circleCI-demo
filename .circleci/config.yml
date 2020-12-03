@@ -25,7 +25,7 @@ jobs:
           gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
 
 workflows:
-    jobs:
+    version: 2
       - test
       - deploy
 
