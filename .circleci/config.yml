@@ -21,9 +21,9 @@ jobs:
           password: $GCLOUD_SERVICE_KEY  # JSON service account you created, do not encode to base64
     steps:
       - run: |
-          echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
-          gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
-          gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
+          echo $GCLOUD_SERVICE_KEY | /root/google-cloud-sdk/bin/gcloud auth activate-service-account --key-file=-
+          /root/google-cloud-sdk/bin/gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+          /root/google-cloud-sdk/bin/gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
 
 workflows:
   version: 2
