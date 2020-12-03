@@ -20,5 +20,5 @@ jobs:
           gcloud auth activate-service-account --key-file=$GCLOUD_SERVICE_KEY
           gcloud --quiet config set project $GOOGLE_PROJECT_ID
           gcloud --quiet config set compute/zone $GOOGLE_COMPUTE_ZONE
-          docker tag brewdamaster/circleci-demo gcr.io/circleci-demo-297514/button-demo
-          gcloud docker push gcr.io/circleci-demo-297514/button-demo
+          docker tag brewdamaster/circleci-demo:button-demo gcr.io/circleci-demo-297514/button-demo
+          docker push gcr.io/circleci-demo-297514/button-demo
