@@ -30,7 +30,8 @@ jobs:
       - run: sudo touch /var/www/default/html/index.html
       - run: sudo chown -R circleci:circleci /var/www/default/html
       - run: sudo chmod -R 755 /var/www/default/html
-      - run: sudo echo -e "<button onclick="myFunction\(\)">Click me</button>\n\n<p id="demo"></p>\n\n<script>\nfunction myFunction\(\) {\n document.getElementById\("demo"\).innerHTML = "Hello World";\n}\n</script>\n\n</body>\n</html>" >> /var/www/default/html/index.html
+      - run: sudo cp ~/project/index.html /var/www/default/html/index.html
+      #- run: sudo echo -e "<button onclick="myFunction\(\)">Click me</button>\n\n<p id="demo"></p>\n\n<script>\nfunction myFunction\(\) {\n document.getElementById\("demo"\).innerHTML = "Hello World";\n}\n</script>\n\n</body>\n</html>" >> /var/www/default/html/index.html
       - run: sudo cat /var/www/default/html/index.html
       - run: sudo systemctl start nginx
       - run: sudo systemctl enable nginx
