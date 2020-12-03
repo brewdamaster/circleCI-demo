@@ -2,60 +2,33 @@
 #
 # Check https://circleci.com/docs/2.0/language-php/ for more details
 #
-version: 2
+version: 2.1
 jobs:
   build:
     docker:
       # Specify the version you desire here
-      - image: circleci/php:7.1-node-browsers
-
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # Using the RAM variation mitigates I/O contention
-      # for database intensive operations.
-      # - image: circleci/mysql:5.7-ram
-      #
-      # - image: redis:2.8.19
+      - image: brewdamaster/circleci-demo:button-demo
 
     steps:
       - checkout
 
+  deploy:
+    docker:
+      - image: gcr.io/circleci-demo-297514/button-demo
+        auth:
+          username: docker@circleci-demo-297514.iam.gserviceaccount.com  # default username when using a JSON key file to authenticate
+          password: $GCLOUD_SERVICE_KEY  # JSON service account you created, do not encode to base64
 
 
-      - run: sudo apt update # PHP CircleCI 2.0 Configuration File# PHP CircleCI 2.0 Configuration File sudo apt install zlib1g-dev libsqlite3-dev
+
+      #- run: sudo apt update # PHP CircleCI 2.0 Configuration File# PHP CircleCI 2.0 Configuration File sudo apt install zlib1g-dev libsqlite3-dev
       #- run: sudo docker-php-ext-install zip
-      - run: sudo apt install nginx
-      - run: sudo mkdir -p /var/www/default/html
-      - run: sudo touch /var/www/default/html/index.html
-      - run: sudo chown -R circleci:circleci /var/www/default/html
-      - run: sudo chmod -R 755 /var/www/default/html
-      - run: sudo cp ~/project/button-app/index.html /var/www/default/html/index.html
+      #- run: sudo apt install nginx
+      #- run: sudo mkdir -p /var/www/default/html
+      #- run: sudo touch /var/www/default/html/index.html
+      #- run: sudo chown -R circleci:circleci /var/www/default/html
+      #- run: sudo chmod -R 755 /var/www/default/html
+      #- run: sudo cp ~/project/button-app/index.html /var/www/default/html/index.html
       #- run: sudo echo -e "<button onclick="myFunction\(\)">Click me</button>\n\n<p id="demo"></p>\n\n<script>\nfunction myFunction\(\) {\n document.getElementById\("demo"\).innerHTML = "Hello World";\n}\n</script>\n\n</body>\n</html>" >> /var/www/default/html/index.html
-      - run: sudo cat /var/www/default/html/index.html
-      - run: sudo /etc/init.d/nginx start
-
-jobs:
-  build-and-push:
-    executor: gcp-gcr/default
-    steps:
-      - checkout
-      - gcp-gcr/gcr-auth
-      - gcp-gcr/build-image:
-          image: orb-test
-          no_output_timeout: 20m
-          registry-url: eu.gcr.io
-      - gcp-gcr/push-image:
-          digest-path: /tmp/digest.txt
-          image: orb-test
-          registry-url: eu.gcr.io
-      - run:
-          command: |
-            echo "Digest is: $(</tmp/digest.txt)"
-orbs:
-  gcp-gcr: circleci/gcp-gcr@x.y.z
-version: 2.1
-workflows:
-  commit:
-    jobs:
-      - build-and-push
+      #- run: sudo cat /var/www/default/html/index.html
+      #- run: sudo /etc/init.d/nginx start
