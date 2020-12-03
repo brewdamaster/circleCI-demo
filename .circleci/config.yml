@@ -26,7 +26,7 @@ jobs:
       - run: sudo apt update # PHP CircleCI 2.0 Configuration File# PHP CircleCI 2.0 Configuration File sudo apt install zlib1g-dev libsqlite3-dev
       #- run: sudo docker-php-ext-install zip
       - run: sudo apt install nginx
-      - run: sudo mkdir -p /var/www/default
+      - run: sudo mkdir -p /var/www/default/html
       - run: touch /var/www/default/html/index.html
       - run: echo -e "<button onclick="myFunction()">Click me</button>\n\n<p id="demo"></p>\n\n<script>\nfunction myFunction() {\n document.getElementById("demo").innerHTML = "Hello World";\n}\n</script>\n\n</body>\n</html>" >> /var/www/default/html/index.html
       - run: sudo chown -R $USER:$USER /var/www/default/html
