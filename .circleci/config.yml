@@ -16,10 +16,9 @@ jobs:
       # build and push Docker image
       - run: |
           source /etc/environment
-          TAG="button-demo"
-          docker pull brewdamaster/circleci-demo:$TAG
+          docker pull brewdamaster/circleci-demo:button-demo
           gcloud auth activate-service-account --key-file=$GCLOUD_SERVICE_KEY
           gcloud --quiet config set project $GOOGLE_PROJECT_ID
           gcloud --quiet config set compute/zone $GOOGLE_COMPUTE_ZONE
-          docker tag brewdamaster/circleci-demo gcr.io/circleci-demo-297514/$TAG
-          gcloud docker push gcr.io/circleci-demo-297514/$TAG
+          docker tag brewdamaster/circleci-demo gcr.io/circleci-demo-297514/button-demo
+          gcloud docker push gcr.io/circleci-demo-297514/button-demo
