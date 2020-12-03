@@ -1,0 +1,54 @@
+# PHP CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-php/ for more details
+#
+version: 2
+jobs:
+  #build:
+    #docker:
+      # Specify the version you desire here
+      #- image: brewdamaster/circleci-demo:button-demo
+      #- image: gcr.io/circleci-demo-297514/button-demo
+
+    #steps:
+      #- checkout
+
+  deploy:
+    docker:
+       - image: brewdamaster/circleci-demo:button-demo
+         auth:
+          username: docker@circleci-demo-297514.iam.gserviceaccount.com  # default username when using a JSON key file to authenticate
+          password: $GCLOUD_SERVICE_KEY  # JSON service account you created, do not encode to base64
+
+    steps:
+      - run: |
+          source /etc/environment
+          /root/google-cloud-sdk/bin/gcloud auth activate-service-account --key-file=$GCLOUD_SERVICE_KEY
+          /root/google-cloud-sdk/bin/gcloud --quiet config set project $GOOGLE_PROJECT_ID
+          /root/google-cloud-sdk/bin/gcloud --quiet config set compute/zone $GOOGLE_COMPUTE_ZONE
+          #docker tag brewdamaster/circleci-demo gcr.io/circleci-demo-297514/button-demo
+          /root/google-cloud-sdk/bin/gcloud docker push gcr.io/circleci-demo-297514/button-demo
+
+
+#/root/google-cloud-sdk/bin/gcloud run deploy button-demo --image IMAGE_URL
+
+workflows:
+  version: 2
+  commit:
+    jobs:
+      #- build
+      - deploy
+
+
+
+      #- run: sudo apt update # PHP CircleCI 2.0 Configuration File# PHP CircleCI 2.0 Configuration File sudo apt install zlib1g-dev libsqlite3-dev
+      #- run: sudo docker-php-ext-install zip
+      #- run: sudo apt install nginx
+      #- run: sudo mkdir -p /var/www/default/html
+      #- run: sudo touch /var/www/default/html/index.html
+      #- run: sudo chown -R circleci:circleci /var/www/default/html
+      #- run: sudo chmod -R 755 /var/www/default/html
+      #- run: sudo cp ~/project/button-app/index.html /var/www/default/html/index.html
+      #- run: sudo echo -e "<button onclick="myFunction\(\)">Click me</button>\n\n<p id="demo"></p>\n\n<script>\nfunction myFunction\(\) {\n document.getElementById\("demo"\).innerHTML = "Hello World";\n}\n</script>\n\n</body>\n</html>" >> /var/www/default/html/index.html
+      #- run: sudo cat /var/www/default/html/index.html
+      #- run: sudo /etc/init.d/nginx start
