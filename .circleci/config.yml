@@ -2,10 +2,9 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: circleci/golang:1.15
-        auth:
-          username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+      - image: brewdamaster/circleci-demo:gcloud-sdk
+
+  # context / project UI env-var reference
     steps:
       - checkout
       # ... steps for building/testing app ...
@@ -16,7 +15,11 @@ jobs:
 
       # build and push Docker image
       - run: |
-          TAG=0.1.$CIRCLE_BUILD_NUM
-          docker build -t CircleCI-Public/circleci-demo-docker:$TAG .
-          echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-          docker push CircleCI-Public/circleci-demo-docker:$TAG
+          source /etc/environment
+          TAG="button-demo"
+          docker pull brewdamaster/circleci-demo:$TAG
+          gcloud auth activate-service-account --key-file=$GCLOUD_SERVICE_KEY
+          gcloud --quiet config set project $GOOGLE_PROJECT_ID
+          gcloud --quiet config set compute/zone $GOOGLE_COMPUTE_ZONE
+          docker tag brewdamaster/circleci-demo gcr.io/circleci-demo-297514/$TAG
+          gcloud docker push gcr.io/circleci-demo-297514/$TAG
